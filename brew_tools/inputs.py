@@ -31,7 +31,7 @@ def between(min: float, max: float) -> Callable:
 T = TypeVar("T")
 
 
-def get_input(prompt: str, convert: Callable[str, T]) -> T:
+def get_input(prompt: str, convert: Callable[[str], T]) -> T:
     """
     Runs a convert function on a prompt
     """

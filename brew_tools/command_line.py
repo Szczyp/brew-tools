@@ -458,7 +458,7 @@ def adjust_sg(ctx, sg, temp, caltemp):
 @main.command()
 @click.argument(
     "what",
-    type=click.Choice(["mass", "vol", "grav", "col"]),
+    type=click.Choice(["mass", "vol", "grav", "col", "temp"]),
 )
 @click.argument("value")
 @click.pass_context
@@ -466,7 +466,7 @@ def convert(ctx, what, value):
     """
     Convert a value between given measurements. Supported types are:
 
-    mass, vol, grav, col
+    mass, vol, grav, col, temp
     """
     value = float(value)
     if what == "mass":
@@ -477,6 +477,8 @@ def convert(ctx, what, value):
         converter.print_gravity(value)
     if what == "col":
         converter.print_colour(value)
+    if what == "temp":
+        converter.print_temperaure(value)
 
 
 def run():

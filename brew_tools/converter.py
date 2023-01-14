@@ -34,3 +34,8 @@ def print_colour(value: float) -> None:
             value, bm.srm_to_ebc(value), bm.srm_to_l(value)
         )
     )
+
+
+def print_temperaure(value: float) -> None:
+    print("{0} C => {1:.3f} F".format(value, bm.c_to_f(value)))
+    print("{0} F => {1:.3f} C".format(value, bm.f_to_c(value)))

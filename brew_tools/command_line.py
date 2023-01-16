@@ -42,6 +42,18 @@ def is_imperial(ctx):
     return not is_metric(ctx)
 
 
+def read_config():
+    """
+    Reads config file
+    """
+    if config.exists():
+        try:
+            config.read_config()
+        except Exception as ex:
+            print(ex)
+            print(f"Unable to read {config.config_file()}")
+
+
 @click.group()
 @click.version_option(version=__version__)
 @click.option(
@@ -65,16 +77,34 @@ def main(ctx, unit):
 
     if not unit:
         try:
+            read_config()
             unit = config.current_config["general"]["unit"]
         except KeyError:
             # Fallback to metric if all else fails
             print(
-                f"Error with config file {config.config_file()}. Defaulting to metric."
+                f"Error with config file {config.config_file()}. Defaulting to metric. You might want to run configure to set default units."
             )
             unit = "metric"
 
     ctx.obj["units"] = UNITS[unit]
     ctx.obj["unit"] = unit
+
+
+@main.command()
+def configure():
+    """
+    Writes config file with selected units.
+    """
+    print("Please select your preferred units.")
+    answer = inputs.get_choice("Enter selection:", config.units)
+
+    config.current_config["general"] = {"unit": config.units[answer]}
+    try:
+        config.write_config()
+    except Exception:
+        print(
+            f"Unable to write to f{config.config_file()}. Check permission and try again."
+        )
 
 
 @main.command()
@@ -481,29 +511,5 @@ def convert(ctx, what, value):
         converter.print_temperaure(value)
 
 
-def run():
-    if not config.exists():
-        print("This is the first time you are running brew tools.")
-        print("Please select your preferred units.")
-        answer = inputs.get_choice("Enter selection:", config.units)
-
-        config.current_config["general"] = {"unit": config.units[answer]}
-        try:
-            config.write_config()
-        except Exception:
-            # TODO allow user to ignore?
-            print(
-                f"Unable to write to f{config.config_file()}. Check permission and try again."
-            )
-            sys.exit(1)
-    else:
-        try:
-            config.read_config()
-        except Exception:
-            print(f"Unable to read {config.config_file()}")
-            sys.exit(1)
-    main()
-
-
 if __name__ == "__main__":
-    run()
+    main()

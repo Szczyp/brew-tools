@@ -13,6 +13,10 @@
         default = pkgs.${system}.poetry2nix.mkPoetryApplication {
           projectDir = self;
           preferWheels = true;
+          postInstall = ''
+            mkdir -p $out/share/fish/vendor_completions.d
+            _BREW_TOOLS_COMPLETE=fish_source $out/bin/brew_tools > $out/share/fish/vendor_completions.d/brew_tools.fish
+          '';
         };
       });
 

@@ -17,7 +17,12 @@ def patch_configparser(monkeypatch):
     )
 
 
-def test_abv(monkeypatch):
+@pytest.fixture(autouse=True)
+def patch_read_config(monkeypatch):
+    monkeypatch.setattr("brew_tools.command_line.read_config", lambda: None)
+
+
+def test_abv():
     runner = CliRunner()
     result = runner.invoke(command_line.main, "abv -og 1.05 -fg 1.02 -adjust")
 

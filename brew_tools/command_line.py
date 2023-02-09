@@ -486,6 +486,37 @@ def adjust_sg(ctx, sg, temp, caltemp):
 
 
 @main.command()
+@click.option(
+    "-og", type=float, help="Original Gravity as value between 1.000 and 1.200"
+)
+@click.option(
+    "-fg", type=float, help="Final gravity as a value between 1.000 and 1.200"
+)
+def alcohol_adjust_gravity(og, fg):
+    """
+    Adjust final gravity for alcohol
+
+    :arg og: original gravity as specific gravity
+    :arg fg: final gravity as specific gravity
+    :returns: alcohol adjusted specific gravity value
+    """
+    if not og:
+        og = inputs.get_gravity_input("Original gravity: ")
+    if not fg:
+        fg = inputs.get_gravity_input("Final gravity: ")
+
+    valid_range = inputs.between(1.0, 1.2)
+    if not valid_range(og):
+        sys.exit(1)
+    if not valid_range(fg):
+        sys.exit(1)
+
+    alcohol_adjusted_grav = bm.adjust_gravity(og, fg)
+
+    print("The alcohol adjusted gravity is {0:.3f}".format(alcohol_adjusted_grav))
+
+
+@main.command()
 @click.argument(
     "what",
     type=click.Choice(["mass", "vol", "grav", "col", "temp"]),

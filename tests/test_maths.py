@@ -160,7 +160,7 @@ def test_l_to_srm():
 
 def test_strike_temp():
     strike = bm.strike_temp(14, 70, 10, 153)
-    assert strike == pytest.approx(162.02, 0.01)
+    assert strike == pytest.approx(158.8, 0.01)
 
 
 def test_sg_temp_correct():

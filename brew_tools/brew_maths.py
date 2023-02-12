@@ -353,7 +353,7 @@ def strike_temp(grain: float, grain_temp: float, vol: float, temp: float) -> flo
     """
     r = (vol * 4) / grain
     t1 = grain_temp
-    t2 = temp + 3  # adjust by 3F for thermal loss
+    t2 = temp
 
     strike = (0.2 / r) * (t2 - t1) + t2
 

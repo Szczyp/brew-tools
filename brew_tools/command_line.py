@@ -513,7 +513,7 @@ def alcohol_adjust_gravity(og, fg):
 
     alcohol_adjusted_grav = bm.adjust_gravity(og, fg)
 
-    print("The alcohol adjusted gravity is {0:.3f}".format(alcohol_adjusted_grav))
+    print("The alcohol adjusted gravity is {0:.4f}".format(alcohol_adjusted_grav))
 
 
 @main.command()
